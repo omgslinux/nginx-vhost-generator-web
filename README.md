@@ -20,8 +20,8 @@ The web application is built with **Symfony**, and uses UX Live Components magic
 1.  **Clone the repository**:
 
     ```bash
-    git clone https://your-repository-path.git
-    cd your-project
+    git clone https://github.com/omgslinux/nginx-vhost-generator-web
+    cd nginx-vhost-generator-web
     ```
 
 2.  **Install PHP dependencies**:
