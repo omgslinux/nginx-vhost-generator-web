@@ -1,0 +1,121 @@
+{% if dto.debug %}
+Common
+======
+{{ _context|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}
+
+{# dto|json_encode(constant('JSON_PRETTY_PRINT'))|raw #}
+{% endif %}
+
+{% if dto.vhostType %}
+{% if dto.vhostType.copy|length %}
+## Warning: make sure the following files are copied into /etc/nginx:
+{% for copy in dto.vhostType.copy %}
+# - {{ copy }}
+{% endfor %}
+{% endif %}
+
+
+{# 💡 Incluir la plantilla específica y guardar el resultado en una variable #}
+{% set specificContent %}
+{% include 'vhost_templates/' ~ dto.vhostType.name ~ '_template.twig' with
+    common|merge(dto.specificParameters)
+  %}
+{% endset %}
+{% set staticFiles %}
+    {% if dto.vhostType != "proxy" and common.useStaticFiles %}
+
+    ### STATIC FILES
+    location ~* \.(css|js|jpg)\$ {
+        access_log off;
+
+        add_header Cache-Control public;
+        add_header Pragma public;
+        add_header Vary Accept-Encoding;
+        expires 1M;
+    }
+    ### END STATIC FILES
+    {% endif %}
+{% endset %}
+{% set logfilePrefix = '/var/log/nginx/' ~ common.serverName ~ '.' ~ common.domainSuffix %}
+
+{% if common.useHttp %}
+# Generated http server block for {{ dto.name }} site
+
+### BEGIN HTTP BLOCK ###
+server {
+    listen {{ common.httpPort }};
+    listen [::]:{{ common.httpPort }};
+    server_name {{ common.serverName }} {{ common.serverName }}.{{ common.domainSuffix }};
+    root {{ common.documentRoot }};
+
+    {% if common.useHttpRedirect %}
+    ### HTTP REDIRECT BLOCK ###
+    # Prevent nginx HTTP Server Detection
+    server_tokens off;
+    return 301 https://$server_name{{ common.httpsPort != 443 ? ':' ~ common.httpsPort }}/$request_uri;
+    ### END HTTP REDIRECT BLOCK ###
+    {% else %}
+    {% if common.logDirFormat == 'suffix/server' %}{% set logfilePrefix = '/var/log/nginx/' ~ common.domainSuffix ~ '/' ~ common.serverName %}{% endif %}
+    error_log {{ logfilePrefix }}/{{ common.serverName}}_error.log;
+    access_log {{ logfilePrefix}}/{{ common.serverName}}_access.log;
+
+    {{ common.clientMaxBodySize ? 'client_max_body_size ' ~ common.clientMaxBodySize ~ ';' }}
+    {{ common.clientBodyTimeout ? 'client_body_timeout ' ~ common.clientBodyTimeout ~ ';' }}
+    {{ common.fastcgiBuffers ? 'fastcgi_buffers ' ~ common.fastcgiBuffers ~ ';' }}
+
+    {{ specificContent }}
+    {{ staticFiles }}
+    {{ common.extraBlock }}
+    {% endif %}
+}
+### END HTTP BLOCK ###
+
+{% endif %}
+
+{% if common.useHttps or common.useHttpRedirect %}
+# Generated https server block for {{ dto.name }} site
+
+### BEGIN HTTPS BLOCK ###
+server {
+    listen {{ common.httpsPort }} ssl http2;
+    listen [::]:{{ common.httpsPort }};
+    server_name {{ common.serverName }} {{ common.serverName }}.{{ common.domainSuffix }};
+    root {{ common.documentRoot }};
+    charset utf-8;
+
+    error_log {{ logfilePrefix }}/{{ common.serverName}}-ssl_error.log;
+    access_log {{ logfilePrefix}}/{{ common.serverName}}-ssl_access.log;
+
+    {{ common.clientMaxBodySize ? 'client_max_body_size ' ~ common.clientMaxBodySize ~ ';' }}
+    {{ common.clientBodyTimeout ? 'client_body_timeout ' ~ common.clientBodyTimeout ~ ';' }}
+    {{ common.fastcgiBuffers ? 'fastcgi_buffers ' ~ common.fastcgiBuffers ~ ';' }}
+
+    # BEGIN SSL_BLOCK
+    add_header Strict-Transport-Security "max-age=31536000;";
+    add_header Pragma "no-cache";
+    add_header Cache-Control "private, max-age=0, no-cache, no-store";
+
+    # BEGIN CERT BLOCK
+    ssl_certificate {{ common.sslCertificate }};
+    ssl_certificate_key {{ common.sslCertificateKey }};
+
+    sslVerifyClient {{ common.sslVerifyClient }};
+    {{ common.sslClientCertificate ? 'sslClientCertificate ' ~ common.sslClientCertificate ~ ';' }}
+    # END CERT BLOCK
+
+    ssl_protocols        TLSv1 TLSv1.1 TLSv1.2;
+    keepalive_timeout    70;
+    ssl_session_cache    shared:SSL:10m;
+    ssl_session_timeout  10m;
+    # END SSL_BLOCK
+
+    {{ specificContent }}
+    {{ staticFiles }}
+    {{ common.extraBlock }}
+
+}
+### END HTTPS BLOCK ###
+{% endif %}
+
+
+{% endif %}

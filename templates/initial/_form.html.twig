@@ -1,0 +1,51 @@
+{{ form_start(form) }}
+    <fieldset class="mb-3 p-3 border border-dark rounded">
+        <legend class="float-none w-auto px-1">Domain related</legend>
+        <div class="row">
+            <div class="col-3">{{ form_label(form.httpPort) }}</div>
+            <div class="col-3">{{ form_label(form.httpsPort) }}</div>
+            <div class="col-3">{{ form_label(form.domainSuffix) }}</div>
+            <div class="col-3">{{ form_label(form.logDirFormat) }}</div>
+        </div>
+        <div class="row">
+            <div class="col-3">{{ form_widget(form.httpPort) }}</div>
+            <div class="col-3">{{ form_widget(form.httpsPort) }}</div>
+            <div class="col-3">{{ form_widget(form.domainSuffix) }}</div>
+            <div class="col-3">{{ form_widget(form.logDirFormat) }}</div>
+        </div>
+    </fieldset>
+    <fieldset class="mb-3 p-3 border border-dark rounded">
+        <legend class="float-none w-auto px-1">SSL Mode Configuration</legend>
+
+        {# Campo para seleccionar el modo SSL #}
+
+        {# Aquí irían los campos dependientes del modo SSL #}
+        {# Por ejemplo, si el sslMode es "https_only", se mostrarán estos campos #}
+        <div id="ssl-mode-fields" class="row">
+            <div class="col-2">{{ form_label(form.sslMode) }}</div>
+            <div class="col-3">{{ form_label(form.sslCertificate) }}</div>
+            <div class="col-3">{{ form_label(form.sslCertificateKey) }}</div>
+            <div class="col-4">{{ form_label(form.wellKnownDir) }}</div>
+        </div>
+        <div class="row">
+            <div class="col-2">{{ form_widget(form.sslMode) }}</div>
+            <div class="col-3">{{ form_widget(form.sslCertificate) }}</div>
+            <div class="col-3">{{ form_widget(form.sslCertificateKey) }}</div>
+            <div class="col-4">{{ form_widget(form.wellKnownDir) }}</div>
+        </div>
+    </fieldset>
+    <fieldset class="mb-3 p-3 border border-dark rounded">
+        <legend class="float-none w-auto px-1">Body request</legend>
+        <div class="row">
+            <div class="col-4">{{ form_label(form.clientMaxBodySize) }}</div>
+            <div class="col-4">{{ form_label(form.clientBodyTimeout) }}</div>
+            <div class="col-4">{{ form_label(form.fastcgiBuffers) }}</div>
+        </div>
+        <div class="row">
+            <div class="col-4">{{ form_widget(form.clientMaxBodySize) }}</div>
+            <div class="col-4">{{ form_widget(form.clientBodyTimeout) }}</div>
+            <div class="col-4">{{ form_widget(form.fastcgiBuffers) }}</div>
+        </div>
+    </fieldset>
+    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}VhostType index{% endblock %}
+
+{% block body %}
+    <h1>VhostType index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Template</th>
+                <th>Parameters</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for vhost_type in vhost_types %}
+            <tr>
+                <td>{{ vhost_type.id }}</td>
+                <td>{{ vhost_type.name }}</td>
+                <td>{{ vhost_type.description }}</td>
+                <td>{{ vhost_type.template|length > 20 ? vhost_type.template|slice(0, 20) ~ '…' : vhost_type.template }}</td>
+                <td>{{ vhost_type.parameters ? vhost_type.parameters|json_encode : '' }}</td>
+                <td>
+                    <a href="{{ path('app_vhost_type_show', {'id': vhost_type.id}) }}">show</a>
+                    <a href="{{ path('app_vhost_type_edit', {'id': vhost_type.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('app_vhost_type_new') }}">Create new</a>
+{% endblock %}

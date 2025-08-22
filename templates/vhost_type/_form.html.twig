@@ -1,0 +1,51 @@
+{{ form_start(form) }}
+    <div class="row">
+        <div class="col-3">{{ form_label(form.name) }}</div>
+        <div class="col-3">{{ form_label(form.description) }}</div>
+    </div>
+    <div class="row">
+        <div class="col-3">{{ form_widget(form.name) }}</div>
+        <div class="col-3">{{ form_widget(form.description) }}</div>
+    </div>
+    <div class="row">
+        <div class="col-3">{{ form_label(form.template) }}</div>
+        <div class="col-9">{{ form_widget(form.template) }}</div>
+    </div>
+
+    <div class="input-group col-md-6">
+        <h3>Ficheros de Configuración a copiar</h3>
+        <div class="row">
+            {# 💡 Recorrer las opciones y agruparlas por directorio #}
+            {% for item in form.copy %}
+            <div class="col-md-6">
+                <div class="form-check">
+                    {{ form_widget(item, {'attr': {'class': 'form-check-input'}}) }}
+                    {{ form_label(item, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="my-4">
+    <div
+        data-controller="form-collection"
+        data-form-collection-index-value="{{ form.parameters|length }}"
+        data-form-collection-prototype-value="{{ include('prototypes/vhost_type_parameter.html.twig', { parameter: form.parameters.vars.prototype })|e('html_attr') }}"
+    >
+        <div data-form-collection-target="collectionContainer">
+            {% for parameter in form.parameters %}
+                {{ include('prototypes/vhost_type_parameter.html.twig', { parameter: parameter }) }}
+            {% endfor %}
+            {% do form.parameters.setRendered %}
+        </div>
+
+        <button type="button" class="btn btn-secondary mt-3" data-action="form-collection#addCollectionElement">
+            Añadir Parámetro
+        </button>
+    </div>
+
+</div>
+    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+    <button class="btn btn-secondary" onclick="history.back()">Cancel</a>
+{{ form_end(form) }}

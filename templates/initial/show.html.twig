@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Initial{% endblock %}
+
+{% block body %}
+    <h1>Initial</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ initial.id }}</td>
+            </tr>
+            <tr>
+                <th>SslMode</th>
+                <td>{{ initial.sslMode }}</td>
+            </tr>
+            <tr>
+                <th>DomainSuffix</th>
+                <td>{{ initial.domainSuffix }}</td>
+            </tr>
+            <tr>
+                <th>LogDirFormat</th>
+                <td>{{ initial.logDirFormat }}</td>
+            </tr>
+            <tr>
+                <th>SslCertificate</th>
+                <td>{{ initial.sslCertificate }}</td>
+            </tr>
+            <tr>
+                <th>SslCertificateKey</th>
+                <td>{{ initial.sslCertificateKey }}</td>
+            </tr>
+            <tr>
+                <th>WellKnownDir</th>
+                <td>{{ initial.wellKnownDir }}</td>
+            </tr>
+            <tr>
+                <th>ClientMaxBodySize</th>
+                <td>{{ initial.clientMaxBodySize }}</td>
+            </tr>
+            <tr>
+                <th>ClientBodyTimeount</th>
+                <td>{{ initial.clientBodyTimeount }}</td>
+            </tr>
+            <tr>
+                <th>FastcgiBuffers</th>
+                <td>{{ initial.fastcgiBuffers }}</td>
+            </tr>
+            <tr>
+                <th>Other</th>
+                <td>{{ initial.other ? initial.other|json_encode : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_initial_index') }}">back to list</a>
+
+    <a href="{{ path('app_initial_edit', {'id': initial.id}) }}">edit</a>
+
+    {{ include('initial/_delete_form.html.twig') }}
+{% endblock %}

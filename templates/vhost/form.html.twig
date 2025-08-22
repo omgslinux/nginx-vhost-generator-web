@@ -1,0 +1,9 @@
+{# templates/vhost/form.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        {{ component('VhostGenerator', { vhost: vhost, loading: "lazy" }) }}
+    </div>
+
+{% endblock %}

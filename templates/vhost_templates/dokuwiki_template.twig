@@ -1,0 +1,87 @@
+# Source: https://www.dokuwiki.org/install:nginx
+
+# Inherit the generic php template for single point to check files
+### DOKUWIKI BLOCK ###
+{% set index = 'doku.php' %}
+
+{% include 'vhost_templates/php_template.twig' %}
+
+{% set rootLocationBlock = "try_files $uri $uri/ =404;" %}
+{% if useRewrite != "0" %}
+    {% set rootLocationBlock = "try_files $uri $uri/ @dokuwiki;" %}
+    {% set urlRewrite = "rewrite ^/doku.php/(.*) /doku.php?id=$1&$args last;" %}
+    {% if useRewrite == "1" %}
+        {% set urlRewrite = "rewrite ^/(.*) /doku.php?id=$1&$args last;" %}
+    {% endif %}
+    {% set urlRewriteBlock %}
+    location @dokuwiki {
+    rewrite ^/_media/(.*) /lib/exe/fetch.php?media=$1 last;
+    rewrite ^/_detail/(.*) /lib/exe/detail.php?media=$1 last;
+    rewrite ^/_export/([^/]+)/(.*) /doku.php?do=export_$1&id=$2 last;
+    {{ urlRewrite|default }}
+    }
+    {% endset %}
+{% endif %}
+
+# HEADERS ######### ######### ######### ######### ######### ######### ##########
+    # Information "leaks"
+    server_tokens off;
+    fastcgi_hide_header X-Powered_by;
+
+# TWEAKS ######### ######### ######### ######### ######### ######### #######  ##
+
+    client_body_buffer_size 128k;
+
+    location ~ ^/lib.*.(js|css|gif|png|ico|jpg|jpeg|svg)$ {
+        expires 365d;   # browser caching
+    }
+
+# RESTRICT ACCESS ######### ######### ######### ######### ######### ######### ##
+    # Reference: https://www.dokuwiki.org/security#deny_directory_access_in_nginx
+    # TODO: Compare with this
+
+    # Comment out while installing, then uncomment
+    {{ DokuwikiInstalled ? '' : '# ' }}location ~ /(install.php) { deny all; }
+
+    # .ht             - .htaccess, .htpasswd, .htdigest, .htanything
+    # .git, .hg, .svn - Git, Mercurial, Subversion.
+    # .vs             - Visual Studio (Code)
+    # All directories except lib.
+    # All "other" files that you don't want to delete, but don't want public.
+
+    location ~ /(.ht|.git|.hg|.svn|.vs|data|conf|bin|inc|vendor|README|VERSION|SECURITY.md|COPYING|composer.json|composer.lock) {
+        #return 404; # https://www.dokuwiki.org/install:nginx?rev=1734102057#nginx_particulars
+        deny all;    # Returns 403
+    }
+
+######################
+    # (2024-08): Is this actually a default feature or does
+    # this belong in a seperate section? Disable by default?
+
+    # Support for X-Accel-Redirect
+    location ~ ^/data/ {
+       internal;
+    }
+########################
+
+# REDIRECT & PHP ### ######### ######### ######### ######### ######### #########
+
+    location / {
+        {{ rootLocationBlock }}
+
+        # This means; where $uri is 'path', if 'GET /path' doesnt exist, redirect
+        # client to 'GET /path/' directory. If neither, goto @dokuwiki rules.
+    }
+
+    {{ urlRewriteBlock|default }}
+
+    location ~ \.php$ {
+        #try_files $uri $uri/ /{{ index }};
+
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param REDIRECT_STATUS 200;
+
+        fastcgi_pass $upstream_php;
+    }
+### END DOKUWIKI BLOCK ###

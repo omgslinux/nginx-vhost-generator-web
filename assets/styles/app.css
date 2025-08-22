@@ -1,0 +1,8 @@
+body {
+    background-color: skyblue;
+}
+
+#vhost_type_template  {
+    font-size: 0.8rem;
+    resize: both;
+}

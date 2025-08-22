@@ -1,0 +1,44 @@
+{# templates/vhost/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Lista de Vhosts{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Lista de Vhosts</h1>
+            <a href="{{ path('app_vhost_edit', {id: 0}) }}" class="btn btn-primary">Crear Vhost</a>
+        </div>
+
+        {% if vhosts|length > 0 %}
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vhost in vhosts %}
+                        <tr>
+                            <td>{{ vhost.id }}</td>
+                            <td>{{ vhost.name }}</td>
+                            <td>{{ vhost.vhostType.name }}</td>
+                            <td>
+                                <a href="{{ path('app_vhost_edit', {id: vhost.id}) }}" class="btn btn-sm btn-info me-2">Editar</a>
+                                <a href="#" class="btn btn-sm btn-danger">Eliminar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="alert alert-info" role="alert">
+                No hay Vhosts registrados.
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

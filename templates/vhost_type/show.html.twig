@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}VhostType{% endblock %}
+
+{% block body %}
+    <h1>VhostType</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ vhost_type.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ vhost_type.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ vhost_type.description }}</td>
+            </tr>
+            <tr>
+                <th>Template</th>
+                <td>{{ vhost_type.template }}</td>
+            </tr>
+            <tr>
+                <th>Parameters</th>
+                <td>{{ vhost_type.parameters ? vhost_type.parameters|json_encode : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_vhost_type_index') }}">back to list</a>
+
+    <a href="{{ path('app_vhost_type_edit', {'id': vhost_type.id}) }}">edit</a>
+
+    {{ include('vhost_type/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,103 @@
+# Taken from https://www.nginx.com/resources/wiki/start/topics/recipes/wordpress/
+
+# Inherit the generic php template for single point to check files
+
+{% include 'vhost_templates/php_template.twig' %}
+
+{% set singleSite = (multisiteSubdir is empty and multisiteSubdomain is empty) %}
+{% set locationCommonContentBlock %}
+        try_files $uri =404;
+        include fastcgi.conf;
+        fastcgi_pass $upstream_php;
+{% endset %}
+
+{% if singleSite %}
+    # Default SUBDIR to "/"
+    {% if subdir is empty %}{% set subdir = '/' %}{% endif %}
+
+    {% set root = (subdir == '/') %}
+    location = /favicon.ico {
+        log_not_found off;
+        access_log off;
+    }
+
+    location = /robots.txt {
+        allow all;
+        log_not_found off;
+        access_log off;
+    }
+
+    location {{ subdir }} {
+        # This is cool because no php is touched for static content.
+        # include the "?$args" part so non-default permalinks doesn't break when using query string
+        try_files $uri $uri/ {{ subdir }}/index.php?$args;
+    }
+
+    location ~ .php$ {
+        #NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
+        {{ locationCommonContentBlock }}
+        {{ root ? 'fastcgi_split_path_info ^(${WORDPRESS_SUBDIR})(/.*)$;' }}
+    }
+
+    location ~* .(js|css|png|jpg|jpeg|gif|ico)$ {
+        expires max;
+        log_not_found off;
+    }
+
+{% elif multisiteSubdomain is not empty %}
+    location ~ ^(/[^/]+)?/files/(.+) {
+        try_files /wp-content/blogs.dir/$blogiddir/files/$2 /wp-includes/ms-files.php?file=$2 ;
+        access_log off;
+        log_not_found off;
+        expires max;
+    }
+
+    #avoid php readfile()
+    location ^~ /blogs.dir {
+        internal;
+        alias {{ documentRoot }}/wp-content/blogs.dir ;
+        access_log off;
+        log_not_found off;
+        expires max;
+    }
+
+    if (!-e $request_filename) {
+        rewrite /wp-admin$ $scheme://$host$uri/ permanent;
+        rewrite ^(/[^/]+)?(/wp-.*) $2 last;
+        rewrite ^(/[^/]+)?(/.*.php) $2 last;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.php?$args ;
+    }
+
+    location ~ .php$ {
+        {{ locationCommonContentBlock }}
+    }
+{% else %}
+    {% set serverName = domainSuffix ~ ' *.' ~ domainSuffix %}
+    location / {
+        try_files $uri $uri/ /index.php?$args ;
+    }
+
+    location ~ .php$ {
+        {{ locationCommonContentBlock }}
+    }
+
+    #WPMU Files
+    location ~ ^/files/(.*)$ {
+        try_files /wp-content/blogs.dir/$blogiddom/$uri /wp-includes/ms-files.php?file=$1 ;
+        access_log off;
+        log_not_found off;
+        expires max;
+    }
+
+    #WPMU x-sendfile to avoid php readfile()
+    location ^~ /blogs.dir {
+        internal;
+        alias {{ documentRoot }}/htdocs/wp-content/blogs.dir;
+        access_log off;
+        log_not_found off;
+        expires max;
+    }
+{% endif %}
