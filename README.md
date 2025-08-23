@@ -60,13 +60,15 @@ Access the web application to start the configuration process.
   * **Create Vhosts**: For each Vhost you need:
       * Enter a descriptive name.
       * Select a `VhostType` to load its predefined template and parameters.
-      * There's an extra block option, where you can enter arbitrary directives, and these will be added at the end.
+      * Fill the `Common parameters`section.
+      * Check the `VhostType related` section for the specific parameters related to the vhost type.
+      * There's an optional `Extra block` section, where you can enter arbitrary directives, and these will be added at the end.
       * Adjust the parameters as needed and see the live preview update instantly.
       * Save the Vhost and repeat the process until all your configurations are complete.
 
 ### 2\. Publish Vhosts (Console Command)
 
-Once all Vhosts are configured and saved in the database, use the console command to generate the actual files and symbolic links.
+Once all Vhosts are configured and saved in the database, use the console command to generate the actual files and symbolic links. If run with superuser permissions (`sudo` or as `root`), files will be created in the base dir, `/etc/nginx`. Otherwise, a test directory in `var/nginx-test/` will be used instead to check. You can force a different directory by using the --base-dir parameter, in whose case you have to make sure you have write permissions for that directory.
 
   * **Generate all Vhosts**:
 
@@ -74,7 +76,7 @@ Once all Vhosts are configured and saved in the database, use the console comman
     php bin/console app:nginx:generate-vhosts
     ```
 
-    This command will generate or update all Vhosts defined in the database. If run with superuser permissions (`sudo`), files will be created in `/etc/nginx`. Otherwise, a test directory in `var/` will be used.
+    This command will generate or update all Vhosts defined in the database.
 
   * **Generate a specific Vhost**:
 

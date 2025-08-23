@@ -1,9 +1,9 @@
 {# templates/components/VhostGenerator.html.twig #}
 <div {{ attributes }} >
     {% if this.vhost.id is null %}
-        <h1>Generar nuevo Vhost</h1>
+        <h1>{% trans %}New Vhost{% endtrans %}</h1>
     {% else %}
-        <h1>Editar Vhost: {{ this.vhost.name }}</h1>
+        <h1>{% trans %}Editar Vhost{% endtrans %}: {{ this.vhost.name }}</h1>
     {% endif %}
     {% set common = vhostGeneratorDto.commonParameters %}
     <div class="row">
@@ -23,7 +23,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingCommon">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCommon" aria-expanded="true" aria-controls="collapseCommon">
-                                Parámetros Globales
+                                {% trans %}Common parameters{% endtrans %}
                             </button>
                         </h2>
                         <div id="collapseCommon" class="accordion-collapse collapse show" aria-labelledby="headingCommon">
@@ -55,8 +55,8 @@
                                         <div class="col-2">{{ form_label(form.commonParameters.httpsPort )}}</div>
                                         <div class="col-3">{{ form_widget(form.commonParameters.httpsPort )}}</div>
                                         <div class="row">
-                                            <div class="col-3 mt-2">{{ form_label(form.commonParameters.sslMode) }}</div>
-                                            <div class="col-9">{{ form_widget(form.commonParameters.sslMode) }}</div>
+                                            <div class="col-4 mt-2">{{ form_label(form.commonParameters.sslMode) }}</div>
+                                            <div class="col-8">{{ form_widget(form.commonParameters.sslMode) }}</div>
                                         </div>
                                         {% if form.commonParameters.sslMode.vars.value == 'letsencrypt' %}
                                             <div class="row">
@@ -135,7 +135,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingSpecific">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpecific" aria-expanded="false" aria-controls="collapseSpecific">
-                                Parámetros Específicos
+                                {% trans %}VhostType related{% endtrans %}
                             </button>
                         </h2>
                         <div id="collapseSpecific" class="accordion-collapse collapse" aria-labelledby="headingSpecific">
@@ -147,7 +147,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingExtra">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExtra" aria-expanded="false" aria-controls="collapseExtra">
-                                Bloque extra (opcional)
+                                {% trans %}Extra block (optional){% endtrans %}
                             </button>
                         </h2>
                         <div id="collapseExtra" class="accordion-collapse collapse" aria-labelledby="headingExtra">
@@ -158,14 +158,14 @@
                 </div>
 
                 <div class="text-end mt-4">
-                    <button type="submit" class="btn btn-primary">Guardar Vhost</button>
+                    <button type="submit" class="btn btn-primary">{% trans %}Save Vhost{% endtrans %}</button>
                 </div>
             {% if app.environment != 'prod' %}{{ form_row(form.debug)}}{% else %}{% do form.debug.setRendered %}{% endif %}
             {{ form_end(form) }}
         </div>
 
         <div class="col-md-6">
-            <h3>Vista Previa del Vhost</h3>
+            <h3>{% trans %}Vhost preview{% endtrans %}</h3>
             <pre class="bg-light p-3 border rounded">
                 <code>
                 {{ this.renderVhostTemplate()|e }}

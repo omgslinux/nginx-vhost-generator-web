@@ -24,24 +24,22 @@ class VhostGeneratorType extends AbstractType
     {
         $builder
             ->add('debug', CheckboxType::class, [
-                'label' => 'Depuración',
+                'label' => 'Debug',
                 'required' => false,
             ])
             ->add('name', TextType::class, [
-                'label' => 'Nombre de la configuración',
+                'label' => 'Vhost name',
             ])
             ->add('vhostType', EntityType::class, [
                 'class' => VhostTypeEntity::class,
                 'choice_label' => 'name',
-                'placeholder' => 'Selecciona un tipo de Vhost',
-                'label' => 'Tipo de Vhost a generar',
+                'placeholder' => 'Select VhostType',
                 'attr' => [
                     'data-action'=> 'change->live#action',
                     'data-live-action-param'=> 'updateSpecific',
                 ]
             ])
             ->add('commonParameters', VhostCommonType::class, [
-                'label' => 'Parámetros comunes'
             ])
             /*
             ->add('defaultParameters', DefaultParameterType::class, [

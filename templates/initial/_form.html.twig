@@ -1,6 +1,6 @@
 {{ form_start(form) }}
     <fieldset class="mb-3 p-3 border border-dark rounded">
-        <legend class="float-none w-auto px-1">Domain related</legend>
+        <legend class="float-none w-auto px-1">{% trans %}Domain related{% endtrans %}</legend>
         <div class="row">
             <div class="col-3">{{ form_label(form.httpPort) }}</div>
             <div class="col-3">{{ form_label(form.httpsPort) }}</div>
@@ -15,7 +15,7 @@
         </div>
     </fieldset>
     <fieldset class="mb-3 p-3 border border-dark rounded">
-        <legend class="float-none w-auto px-1">SSL Mode Configuration</legend>
+        <legend class="float-none w-auto px-1">{% trans %}SSL Mode Configuration{% endtrans %}</legend>
 
         {# Campo para seleccionar el modo SSL #}
 
@@ -35,7 +35,7 @@
         </div>
     </fieldset>
     <fieldset class="mb-3 p-3 border border-dark rounded">
-        <legend class="float-none w-auto px-1">Body request</legend>
+        <legend class="float-none w-auto px-1">{% trans %}Body request{% endtrans %}</legend>
         <div class="row">
             <div class="col-4">{{ form_label(form.clientMaxBodySize) }}</div>
             <div class="col-4">{{ form_label(form.clientBodyTimeout) }}</div>

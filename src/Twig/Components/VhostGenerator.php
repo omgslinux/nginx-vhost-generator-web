@@ -74,10 +74,10 @@ final class VhostGenerator extends AbstractController
     #[LiveAction]
     public function checkSslMode()
     {
-        if ($this->formValues['defaultParameters']['sslMode'] == 'letsencrypt') {
-            $letsencryptBase = '/etc/letsencrypt/live/' . $this->formValues['commonParameters']['serverName'] . '.' . $this->formValues['defaultParameters']['domainSuffix'] . '/';
-            $this->formValues['defaultParameters']['sslCertificate'] = $letsencryptBase . 'fullchain.pem';
-            $this->formValues['defaultParameters']['sslCertificateKey'] = $letsencryptBase . 'privkey.pem';
+        if ($this->formValues['commonParameters']['sslMode'] == 'letsencrypt') {
+            $letsencryptBase = '/etc/letsencrypt/live/' . $this->formValues['commonParameters']['serverName'] . '.' . $this->formValues['commonParameters']['domainSuffix'] . '/';
+            $this->formValues['commonParameters']['sslCertificate'] = $letsencryptBase . 'fullchain.pem';
+            $this->formValues['commonParameters']['sslCertificateKey'] = $letsencryptBase . 'privkey.pem';
         }
     }
 
