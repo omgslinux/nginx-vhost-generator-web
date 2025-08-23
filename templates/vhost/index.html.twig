@@ -2,23 +2,23 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}Lista de Vhosts{% endblock %}
+{% block title %}{% trans %}Vhost Index{% endtrans %}{% endblock %}
 
 {% block body %}
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>Lista de Vhosts</h1>
-            <a href="{{ path('app_vhost_edit', {id: 0}) }}" class="btn btn-primary">Crear Vhost</a>
+            <h1>{% trans %}Vhost Index{% endtrans %}</h1>
+            <a href="{{ path('app_vhost_edit', {id: 0}) }}" class="btn btn-primary">{% trans %}New Vhost{% endtrans %}</a>
         </div>
 
         {% if vhosts|length > 0 %}
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Tipo</th>
-                        <th>Acciones</th>
+                    <th>{% trans %}ID{% endtrans %}</th>
+                        <th>{% trans %}Name{% endtrans %}</th>
+                        <th>{% trans %}VhostType{% endtrans %}</th>
+                        <th>{% trans %}Actions{% endtrans %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,8 +28,8 @@
                             <td>{{ vhost.name }}</td>
                             <td>{{ vhost.vhostType.name }}</td>
                             <td>
-                                <a href="{{ path('app_vhost_edit', {id: vhost.id}) }}" class="btn btn-sm btn-info me-2">Editar</a>
-                                <a href="#" class="btn btn-sm btn-danger">Eliminar</a>
+                                <a href="{{ path('app_vhost_edit', {id: vhost.id}) }}" class="btn btn-sm btn-info me-2">{% trans %}Edit{% endtrans %}</a>
+                                <a href="#" class="btn btn-sm btn-danger">{% trans %}Delete{% endtrans %}</a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -37,7 +37,7 @@
             </table>
         {% else %}
             <div class="alert alert-info" role="alert">
-                No hay Vhosts registrados.
+                {% trans %}No Vhosts found{% endtrans %}
             </div>
         {% endif %}
     </div>
