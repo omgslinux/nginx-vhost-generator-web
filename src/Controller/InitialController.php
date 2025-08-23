@@ -17,9 +17,9 @@ final class InitialController extends AbstractController
     const PREFIX = 'app_initial_';
 
     #[Route(name: 'index', methods: ['GET', 'POST'])]
-    public function index(Request $request, InitialRepository $initialRepository, EntityManagerInterface $entityManager): Response
+    public function index(Request $request, InitialRepository $repo, EntityManagerInterface $em): Response
     {
-        $initials = $initialRepository->findAll();
+        $initials = $repo->findAll();
         if (null==$initials) {
             $initial = new Initial();
         } else {
@@ -30,8 +30,8 @@ final class InitialController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($initial);
-            $entityManager->flush();
+            $em->persist($initial);
+            $em->flush();
         }
 
         return $this->render('initial/new.html.twig', [
