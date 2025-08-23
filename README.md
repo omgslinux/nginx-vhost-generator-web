@@ -60,6 +60,7 @@ Access the web application to start the configuration process.
   * **Create Vhosts**: For each Vhost you need:
       * Enter a descriptive name.
       * Select a `VhostType` to load its predefined template and parameters.
+      * There's an extra block option, where you can enter arbitrary directives, and these will be added at the end.
       * Adjust the parameters as needed and see the live preview update instantly.
       * Save the Vhost and repeat the process until all your configurations are complete.
 
