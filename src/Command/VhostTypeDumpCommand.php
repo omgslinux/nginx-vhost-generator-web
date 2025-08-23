@@ -61,7 +61,7 @@ class VhostTypeDumpCommand extends Command
         }
 
         $outputContent = "<?php\n\nreturn " . var_export($vhostTypeMap, true) . ";\n";
-        $filePath = $this->projectDir . '/src/DataFixtures/VhostTypeData.php';
+        $filePath = $this->projectDir . '/config/data/VhostTypeData.php';
 
         file_put_contents($filePath, $outputContent);
 

@@ -18,7 +18,7 @@ class VhostTypeFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $vhostTypeDataPath = $this->projectDir . '/src/DataFixtures/VhostTypeData.php';
+        $vhostTypeDataPath = $this->projectDir . '/config/data/VhostTypeData.php';
         $templatesDir = $this->projectDir . '/templates/vhost_templates';
 
         if (!file_exists($vhostTypeDataPath)) {
