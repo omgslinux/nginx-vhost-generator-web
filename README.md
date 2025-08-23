@@ -34,19 +34,14 @@ The web application is built with **Symfony**, and uses UX Live Components magic
     For a default SQLite setup, no additional configuration is required. For other databases, adjust your `.env` file accordingly.
 
 4.  **Create the database schema**:
+    For production:
 
     ```bash
-    php bin/console doctrine:database:create
-    php bin/console doctrine:migrations:migrate
+    php bin/console doctrine:migrations:migrate --env=prod
+
+    php bin/console doctrine:fixtures:load --append --env=prod
     ```
-
-5.  **Run the web server**:
-
-    ```bash
-    symfony server:start
-    ```
-
-    The application will be accessible at `http://127.0.0.1:8000`.
+    For local development, just remove `--env=prod`.
 
 -----
 
@@ -68,7 +63,7 @@ Access the web application to start the configuration process.
 
 ### 2\. Publish Vhosts (Console Command)
 
-Once all Vhosts are configured and saved in the database, use the console command to generate the actual files and symbolic links. If run with superuser permissions (`sudo` or as `root`), files will be created in the base dir, `/etc/nginx`. Otherwise, a test directory in `var/nginx-test/` will be used instead to check. You can force a different directory by using the --base-dir parameter, in whose case you have to make sure you have write permissions for that directory.
+Once all Vhosts are configured and saved in the database, use the console command to generate the actual files and symbolic links. If run with superuser permissions (`sudo` or as `root`), files will be created in the base dir, `/etc/nginx`. Otherwise, a test directory in `var/nginx-test/` will be used instead (just to check the results). You can force a different directory by using the --base-dir parameter, in whose case you have to make sure you have write permissions for that directory.
 
   * **Generate all Vhosts**:
 
