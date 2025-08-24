@@ -44,5 +44,6 @@ return [
     'Vhost preview' => 'Vista previa',
     'suffix/name' => 'sufijo/nombre',
     'name.suffix' => 'nombre.sufijo',
+    'Homepage' => 'Inicio',
 
 ];
