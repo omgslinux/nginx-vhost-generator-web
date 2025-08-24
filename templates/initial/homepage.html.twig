@@ -1,0 +1,51 @@
+{# templates/vhost/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Homepage{% endtrans %}{% endblock %}
+
+{% block body %}
+{% trans_default_domain 'homepage' %}
+<div class="container mt-5">
+    {% if defaults %}
+        <h2>{{ 'congratulations_title'|trans }}</h2>
+        <p>{{ 'defined_defaults'|trans }}</p>
+    {% else %}
+        <h2 class="btn btn-warning">{{ 'missing_defaults_title'|trans }}</h2>
+        <p>{{ 'missing_defaults_text'|trans({
+            '%url%': path('app_initial_defaults')
+        })|raw }}</p>
+    {% endif %}
+    <ol>
+        <li>{{ 'step_1'|trans({
+            '%url%': path('app_vhost_index')
+        })|raw }}</li>
+        <li>{{ 'step_2'|trans }}</li>
+        <li>{{ 'step_3'|trans }}</li>
+        <li>{{ 'step_4'|trans }}</li>
+        <li>{{ 'step_5'|trans }}</li>
+        <li>{{ 'step_6'|trans }}</li>
+        <li>{{ 'step_7'|trans }}</li>
+        <li>{{ 'step_8'|trans }}</li>
+    </ol>
+    <h2>{{ 'publish_title'|trans }}</h2>
+    <p>{{ 'publish_text'|trans|raw }}</p>
+
+    <h3>{{ 'generate_all_vhosts_title'|trans }}</h3>
+    <pre>
+        php bin/console app:nginx:generate-vhosts
+    </pre>
+    <p>{{ 'generate_all_vhosts_text'|trans }}</p>
+
+    <h3>{{ 'generate_specific_vhost_title'|trans }}</h3>
+    <p>{{ 'generate_specific_vhost_text'|trans|raw }}</p>
+    <pre>
+        php bin/console app:nginx:generate-vhosts my-vhost
+    </pre>
+
+    <h3>{{ 'simulate_generation_title'|trans }}</h3>
+    <p>{{ 'simulate_generation_text'|trans }}</p>
+    <pre>
+        php bin/console app:nginx:generate-vhosts --dry-run
+    </pre>
+</div>{% endblock %}
