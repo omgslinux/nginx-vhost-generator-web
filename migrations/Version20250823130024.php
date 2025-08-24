@@ -27,6 +27,23 @@ final class Version20250823130024 extends AbstractMigration
         $this->addSql('CREATE TABLE vhosts (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, vhost_type_id INTEGER NOT NULL, name VARCHAR(32) NOT NULL, parameters CLOB NOT NULL --(DC2Type:json)
         , CONSTRAINT FK_7256DEDB9C008316 FOREIGN KEY (vhost_type_id) REFERENCES vhost_types (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_7256DEDB9C008316 ON vhosts (vhost_type_id)');
+
+
+
+        $vhostTypeData = include('./config/data/VhostTypeData.php');
+        foreach ($vhostTypeData as $name => $data) {
+            $this->addSql(
+                'INSERT INTO vhost_types (name, description, parameters, copy, template) VALUES (?, ?, ?, ?, ?)',
+                [
+                    $name,
+                    $data['description'],
+                    json_encode($data['parameters']),
+                    json_encode($data['copy']),
+                    file_get_contents('./templates/vhost_templates/' . $name . '_template.twig'),
+                ]
+            );
+        }
+
     }
 
     public function down(Schema $schema): void

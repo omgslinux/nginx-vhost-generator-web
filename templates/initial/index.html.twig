@@ -1,0 +1,50 @@
+{# templates/vhost/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Homepage{% endtrans %}{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+    {% if defaults %}
+        <h2>Congratulations!!</h2>
+        <p>You have defined the default settings for your server. Now, you have to define your vhosts.</p>
+    {% else %}
+        <h2 class="btn btn-warning">Missing defaults</h2>
+        <p>It looks like you haven't defined the defined the <a href="{{ path('app_initial_defaults') }}">default settings</a> for your server. Once, you're finished, you have to define your vhosts.</p>
+    {% endif %}
+    <ol>
+        <li>Go to <a href="{{ path('app_vhost_index') }}">Vhost List</a> and create new vhosts or edit existing</li>
+        <li>In the vhost form, set first a descriptive name for the vhost</li>
+        <li>Choose a Vhost Type: The system uses a set of Vhost Types with pre-configured templates and parameters tailored for specific application purposes (e.g., a simple PHP app, a reverse proxy, a static site).</li>
+        <li>There is a first section, Common Parameters, where you set parameters like the name server, domain suffix, SSL certificate paths, log formats, etc, which are then used as a baseline for new Vhosts.</li>
+        <li>Then there is the Vhost Type related parameters section, where you set the necessary parameters related to the vhost type.</li>
+        <li>There is an option section for an Extra block, where you can enter arbitrary nginx directives or blocks, which will be appended at the bottom of the configuration.</li>
+        <li>As you type the parameters, you can see at the right side, a live, real-time preview of the Nginx configuration file.</li>
+        <li>When finished, save the Vhost and repeat the process for all your vhosts.</li>
+    </ol>
+<h2>Publish Vhosts (Console Command)</h2>
+
+<p>Once all Vhosts are configured and saved in the database, use the console command to generate the actual files and symbolic links. If run with superuser permissions (<code>sudo</code> or as <code>root</code>), files will be created in the base dir, <code>/etc/nginx</code>. Otherwise, a test directory in <code>var/nginx-test/</code> will be used instead (just to check the results). You can force a different directory by using the <code>--base-dir</code> parameter, in whose case you have to make sure you have write permissions for that directory.</p>
+
+  <h3>Generate all Vhosts</h3>
+
+    <pre>
+    php bin/console app:nginx:generate-vhosts</pre>
+
+    <p>This command will generate or update all Vhosts defined in the database.</p>
+
+  <h3>Generate a specific Vhost</h3>
+
+    <p>Being <code>my-vhost</code> the name given to a self-created vhost in the database, you can use
+
+    <pre>
+    php bin/console app:nginx:generate-vhosts my-vhost </pre>
+
+  <h3>Simulate generation</h3>
+    <p>Use the <code>--dry-run</code> option to check the generation logic without affecting your system.</p>
+
+    <pre>
+    php bin/console app:nginx:generate-vhosts --dry-run</pre>
+    </div>
+{% endblock %}
