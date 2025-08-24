@@ -34,15 +34,12 @@ The web application is built with **Symfony**, and uses UX Live Components magic
     For a default SQLite setup, no additional configuration is required. For other databases, adjust your `.env` file accordingly.
 
 4.  **Create the database schema**:
-    For production:
 
     ```bash
-    php bin/console doctrine:migrations:migrate --env=prod
-
-    php bin/console doctrine:fixtures:load --append --env=prod
+    php bin/console doctrine:migrations:migrate
     ```
-    For local development, just remove `--env=prod`.
 
+    This will create the `var/data_dev.db` file and populate the database. If you intend to run another environment, copy or move the file according to your `.env` settings, and make sure the php process can write the file.
 -----
 
 ## Usage
