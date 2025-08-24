@@ -44,7 +44,13 @@ The web application is built with **Symfony**, and uses UX Live Components magic
 
 ## Usage
 
-### 1\. Manage Vhosts (Web Interface)
+### 1\. Create credentials
+    Every time you try to access to a privileged part, you need authentication. Thus, the very first time, you don't have any
+    credentials, so you'll see a form to create a custom user and password. After creation, you'll see the login form, where
+    you enter those credentials.
+    If ever you need to reset credentials, delete the `var/user_credentials.txt` file.
+
+### 2\. Manage Vhosts (Web Interface)
 
 Access the web application to start the configuration process.
 
@@ -58,7 +64,7 @@ Access the web application to start the configuration process.
       * Adjust the parameters as needed and see the live preview update instantly.
       * Save the Vhost and repeat the process until all your configurations are complete.
 
-### 2\. Publish Vhosts (Console Command)
+### 3\. Publish Vhosts (Console Command)
 
 Once all Vhosts are configured and saved in the database, use the console command to generate the actual files and symbolic links. If run with superuser permissions (`sudo` or as `root`), files will be created in the base dir, `/etc/nginx`. Otherwise, a test directory in `var/nginx-test/` will be used instead (just to check the results). You can force a different directory by using the --base-dir parameter, in whose case you have to make sure you have write permissions for that directory.
 

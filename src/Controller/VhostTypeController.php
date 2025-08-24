@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
-#[Route('/vhosttype')]
+#[Route('/admin/vhosttype')]
 final class VhostTypeController extends AbstractController
 {
     #[Route(name: 'app_vhost_type_index', methods: ['GET'])]

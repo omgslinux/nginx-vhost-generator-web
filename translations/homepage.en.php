@@ -5,6 +5,10 @@ return [
     'defined_defaults' => 'You have defined the default settings for your server. Now, you have to define your vhosts.',
     'missing_defaults_title' => 'Missing defaults',
     'missing_defaults_text' => 'It looks like you haven\'t defined the <a href="%url%">default settings</a> for your server. Once, you\'re finished, you have to define your vhosts.',
+    'credentials' => "Every time you try to access to a privileged part, you need authentication. Thus, the very first time, you don't have any
+    credentials, so you'll see a form to create a custom user and password. After creation, you'll see the login form, where
+    you enter those credentials.
+    If ever you need to reset credentials, delete the `var/user_credentials.txt` file.",
     'step_1' => 'Go to <a href="%url%">Vhost List</a> and create new vhosts or edit existing',
     'step_2' => 'In the vhost form, set first a descriptive name for the vhost',
     'step_3' => 'Choose a Vhost Type: The system uses a set of Vhost Types with pre-configured templates and parameters tailored for specific application purposes (e.g., a simple PHP app, a reverse proxy, a static site).',
@@ -21,4 +25,14 @@ return [
     'generate_specific_vhost_text' => 'Being <code>my-vhost</code> the name given to a self-created vhost in the database, you can use',
     'simulate_generation_title' => 'Simulate generation',
     'simulate_generation_text' => 'Use the <code>--dry-run</code> option to check the generation logic without affecting your system.',
+
+    'create_user.title' => 'Create User',
+    'create_user.card_title' => 'First Time Setup',
+    'create_user.intro' => 'Please create the first user for the system. This user will have administrator privileges.',
+    'create_user.username_label' => 'Username',
+    'create_user.password_label' => 'Password',
+    'create_user.repeat_password_label' => 'Repeat Password',
+    'create_user.button' => 'Create User',
+
+
 ];

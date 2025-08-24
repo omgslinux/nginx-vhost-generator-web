@@ -1,0 +1,42 @@
+{# templates/security/login.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% trans_default_domain 'security' %}
+
+{% block title %}{{ 'login.title'|trans }}{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white text-center">
+                    <h2>{{ 'login.card_title'|trans }}</h2>
+                </div>
+                <div class="card-body">
+                    {% if error %}
+                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    {% endif %}
+
+                    <form action="{{ path('app_initial_login') }}" method="post">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">{{ 'login.username'|trans }}</label>
+                            <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">{{ 'login.password'|trans }}</label>
+                            <input type="password" id="password" name="_password" class="form-control" required>
+                        </div>
+
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary" type="submit">{{ 'login.button'|trans }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class VhostController extends AbstractController
 {
-    #[Route('/vhosts', name: 'app_vhost_index')]
+    #[Route('/admin/vhosts', name: 'app_vhost_index')]
     public function index(VhostRepository $vhostRepository): Response
     {
         $vhosts = $vhostRepository->findAll();
