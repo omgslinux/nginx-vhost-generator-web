@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% trans_default_domain 'homepage' %}
+
+{% block title %}{{ 'create_user.title'|trans }}{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white text-center">
+                    <h2>{{ 'create_user.card_title'|trans }}</h2>
+                </div>
+                <div class="card-body">
+                    <p class="text-center">{{ 'create_user.intro'|trans }}</p>
+
+                    {{ form_start(form) }}
+                        <div class="mb-3">
+                            {{ form_row(form.username, {
+                                'label': 'create_user.username_label'|trans
+                            }) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_row(form.password.first, {
+                                'label': 'create_user.password_label'|trans
+                            }) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_row(form.password.second, {
+                                'label': 'create_user.repeat_password_label'|trans
+                            }) }}
+                        </div>
+                        <div class="d-grid gap-2">
+                            {{ form_widget(form.create, {
+                                'attr': {'class': 'btn btn-primary'},
+                                'label': 'create_user.button'|trans
+                            }) }}
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

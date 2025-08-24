@@ -5,6 +5,8 @@ return [
     'defined_defaults' => 'Has definido la configuración por defecto para tu servidor. Ahora, tienes que definir tus vhosts.',
     'missing_defaults_title' => 'Faltan valores por defecto',
     'missing_defaults_text' => 'Parece que no has definido la <a href="%url%">configuración por defecto</a> para tu servidor. Cuando termines, tendrás que definir tus vhosts.',
+    'credentials' => "Cada vez que se intente acceder a una parte privilegiada, se necesitan credenciales. Como la primera vez no se han creado, saldrá un formulario para crearlas, pidiendo el usuario y la contraseña. Después de crearlo, saldrá el formulario de inicio de sesión, donde hay que introducir esas credenciales.
+    Si alguna vez necesita resetear las credenciales, borre el fichero `var/user_credentials.txt`.",
     'step_1' => 'Ve a <a href="%url%">la Lista de Vhosts</a> y crea nuevos vhosts o edita los existentes',
     'step_2' => 'En el formulario del vhost, establece primero un nombre descriptivo para el vhost',
     'step_3' => 'Elige un tipo de Vhost: el sistema utiliza un conjunto de tipos de Vhost con plantillas y parámetros preconfigurados para propósitos de aplicación específicos (por ejemplo, una aplicación PHP simple, un proxy inverso, un sitio estático).',
@@ -21,4 +23,13 @@ return [
     'generate_specific_vhost_text' => 'Siendo <code>mi-vhost</code> el nombre de un vhost creado en la base de datos, puedes usar',
     'simulate_generation_title' => 'Simular generación',
     'simulate_generation_text' => 'Usa la opción <code>--dry-run</code> para comprobar la lógica de generación sin afectar a tu sistema.',
+
+    'create_user.title' => 'Crear Usuario',
+    'create_user.card_title' => 'Configuración Inicial',
+    'create_user.intro' => 'Por favor, crea el primer usuario para el sistema. Este usuario tendrá privilegios de administrador.',
+    'create_user.username_label' => 'Nombre de usuario',
+    'create_user.password_label' => 'Contraseña',
+    'create_user.repeat_password_label' => 'Repetir Contraseña',
+    'create_user.button' => 'Crear Usuario',
+
 ];
