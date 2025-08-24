@@ -17,12 +17,12 @@ final class InitialController extends AbstractController
     const PREFIX = 'app_initial_';
 
     #[Route(name: 'homepage', methods: ['GET', 'POST'])]
-    public function index(InitialRepository $repo,): Response
+    public function homepage(InitialRepository $repo,): Response
     {
         $initials = $repo->findAll();
 
         return $this->render(
-            'initial/index.html.twig',
+            'initial/homepage.html.twig',
             [
                 'defaults' => null!=$initials
             ]
