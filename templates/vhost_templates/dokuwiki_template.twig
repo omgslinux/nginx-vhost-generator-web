@@ -49,7 +49,7 @@
     # All directories except lib.
     # All "other" files that you don't want to delete, but don't want public.
 
-    location ~ /(.ht|.git|.hg|.svn|.vs|data|conf|bin|inc|vendor|README|VERSION|SECURITY.md|COPYING|composer.json|composer.lock) {
+    location ~ /(\.ht|\.git|\.hg|\.svn|\.vs|data|conf|bin|inc|vendor|README|VERSION|SECURITY\.md|COPYING|composer\.json|composer\.lock) {
         #return 404; # https://www.dokuwiki.org/install:nginx?rev=1734102057#nginx_particulars
         deny all;    # Returns 403
     }
