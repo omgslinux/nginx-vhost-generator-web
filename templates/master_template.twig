@@ -1,3 +1,17 @@
+{% set common = common|merge(dto.specificParameters) %}
+{% set preload %}
+{% include 'vhost_templates/' ~ dto.vhostType.name ~ '_preload.twig' ignore missing with common %}
+{% endset %}
+{# Parseamos JSON si no está vacío #}
+{% set preload = preload|trim %}
+{% set data = preload ? preload|json_decode : {} %}
+
+{# Ahora tenemos disponible serverName #}
+{% set serverName = data.serverName ?? '' %}
+
+{% set specificContent %}
+{% include 'vhost_templates/' ~ dto.vhostType.name ~ '_template.twig' with common %}
+{% endset %}
 {% if dto.debug %}
 Common
 ======
@@ -17,13 +31,7 @@ Common
 # Please check their contents.
 {% endif %}
 
-
 {# 💡 Incluir la plantilla específica y guardar el resultado en una variable #}
-{% set specificContent %}
-{% include 'vhost_templates/' ~ dto.vhostType.name ~ '_template.twig' with
-    common|merge(dto.specificParameters)
-  %}
-{% endset %}
 {% set staticFiles %}
     {% if dto.vhostType != "proxy" and common.useStaticFiles %}
 
@@ -48,7 +56,7 @@ Common
 server {
     listen {{ common.httpPort }};
     listen [::]:{{ common.httpPort }};
-    server_name {{ common.serverName }} {{ common.serverName }}.{{ common.domainSuffix }};
+    server_name {{ serverName|default(common.serverName ~ ' ' ~ common.serverName ~ '.' ~ common.domainSuffix) }};
     root {{ common.documentRoot }};
 
     {% if common.useHttpRedirect %}
@@ -67,12 +75,11 @@ server {
     {{ common.fastcgiBuffers ? 'fastcgi_buffers ' ~ common.fastcgiBuffers ~ ';' }}
 
     {{ specificContent }}
-    {{ staticFiles }}
-    {{ common.extraBlock }}
-    {% endif %}
+    {{- staticFiles -}}
+    {{- common.extraBlock -}}
+    {%- endif %} 
 }
 ### END HTTP BLOCK ###
-
 {% endif %}
 
 {% if common.useHttps or common.useHttpRedirect %}
@@ -82,7 +89,7 @@ server {
 server {
     listen {{ common.httpsPort }} ssl http2;
     listen [::]:{{ common.httpsPort }};
-    server_name {{ common.serverName }} {{ common.serverName }}.{{ common.domainSuffix }};
+    server_name {{ serverName|default(common.serverName ~ ' ' ~ common.serverName ~ '.' ~ common.domainSuffix) }};
     root {{ common.documentRoot }};
     charset utf-8;
 
@@ -118,7 +125,6 @@ server {
 
 }
 ### END HTTPS BLOCK ###
-{% endif %}
+{% endif -%}
 
-
-{% endif %}
+{%- endif -%}
