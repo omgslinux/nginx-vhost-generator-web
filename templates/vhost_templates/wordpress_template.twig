@@ -1,17 +1,16 @@
 # Taken from https://www.nginx.com/resources/wiki/start/topics/recipes/wordpress/
 
 # Inherit the generic php template for single point to check files
-
-{% include 'vhost_templates/php_template.twig' %}
-
 {% set singleSite = (multisiteSubdir is empty and multisiteSubdomain is empty) %}
 {% set locationCommonContentBlock %}
-        try_files $uri =404;
-        include fastcgi.conf;
-        fastcgi_pass $upstream_php;
+try_files $uri =404;
+include fastcgi.conf;
+fastcgi_pass $upstream_php;
 {% endset %}
+{%- include 'vhost_templates/php_template.twig' %}
 
 {% if singleSite %}
+    # Single site
     # Default SUBDIR to "/"
     {% if subdir is empty %}{% set subdir = '/' %}{% endif %}
 
@@ -44,7 +43,8 @@
         log_not_found off;
     }
 
-{% elseif multisiteSubdomain is not empty %}
+{% elseif multisiteSubdir is not empty %}
+    # Subdir
     location ~ ^(/[^/]+)?/files/(.+) {
         try_files /wp-content/blogs.dir/$blogiddir/files/$2 /wp-includes/ms-files.php?file=$2 ;
         access_log off;
@@ -67,22 +67,29 @@
         rewrite ^(/[^/]+)?(/.*.php) $2 last;
     }
 
+    {#}
     location / {
         try_files $uri $uri/ /index.php?$args ;
-    }
+    } #}
 
+    {#}
     location ~ \.php$ {
         {{ locationCommonContentBlock }}
     }
+    #}
 {% else %}
     {% set serverName = domainSuffix ~ ' *.' ~ domainSuffix %}
-    location / {
+    # Subdomain
+    {#location / {
         try_files $uri $uri/ /index.php?$args ;
     }
+    #}
 
+    {#}
     location ~ \.php$ {
         {{ locationCommonContentBlock }}
     }
+    #}
 
     #WPMU Files
     location ~ ^/files/(.*)$ {
@@ -100,4 +107,4 @@
         log_not_found off;
         expires max;
     }
-{% endif %}
+{% endif -%}

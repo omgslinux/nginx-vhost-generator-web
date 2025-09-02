@@ -1,0 +1,6 @@
+{% set serverName = serverName ~ ' ' ~ serverName ~ '.' ~ domainSuffix %}
+{%- if multisiteSubdomain is not empty -%}
+{%- set serverName = domainSuffix ~ ' *.' ~ domainSuffix -%}
+{%- endif -%}
+
+{{ { serverName: serverName }|json_encode|raw }}
