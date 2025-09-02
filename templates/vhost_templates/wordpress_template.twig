@@ -25,11 +25,11 @@ fastcgi_pass $upstream_php;
         log_not_found off;
         access_log off;
     }
-
+    {% if not root %}
     location {{ subdir }} {
         # This is cool because no php is touched for static content.
         # include the "?$args" part so non-default permalinks doesn't break when using query string
-        try_files $uri $uri/ {{ subdir }}index.php?$args;
+        try_files $uri $uri/ {{ subdir }}/index.php?$args;
     }
 
     location ~ \.php$ {
@@ -37,6 +37,7 @@ fastcgi_pass $upstream_php;
         {{ locationCommonContentBlock }}
         {{ root ? 'fastcgi_split_path_info ^(' ~ subdir ~ ')(/.*)$;' }}
     }
+    {% endif %}
 
     location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
         expires max;
