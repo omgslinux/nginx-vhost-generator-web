@@ -1,0 +1,10 @@
+{% set httpSpecificContent %}
+    set $app_env {{ HTTP_ENV|default('dev')}};
+{% endset %}
+{% set httpsSpecificContent %}
+    set $app_env {{ HTTPS_ENV|default('prod')}};
+{% endset %}
+
+
+
+{{ { httpSpecificContent: httpSpecificContent, httpsSpecificContent: httpsSpecificContent }|json_encode|raw }}

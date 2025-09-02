@@ -1,8 +1,6 @@
 ### BEGIN SYMFONY BLOCK
 
 # Inherit the generic php template for single point to check files
-
-    set $app_env {{ APP_ENV|default('xxx')}};
 {% set extraIndexLocationBlock %}
    fastcgi_param APP_ENV $app_env;
 {% endset %}
