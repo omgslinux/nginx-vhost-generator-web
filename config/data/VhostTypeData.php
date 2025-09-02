@@ -74,8 +74,15 @@ return array (
     array (
       0 => 
       array (
-        'name' => 'APP_ENV',
-        'description' => 'APP_ENV environment',
+        'name' => 'HTTP_ENV',
+        'description' => 'APP_ENV for dev',
+        'dataType' => 'text',
+        'defaultValue' => 'dev',
+      ),
+      1 => 
+      array (
+        'name' => 'HTTPS_ENV',
+        'description' => 'APP_ENV for prod',
         'dataType' => 'text',
         'defaultValue' => 'prod',
       ),
