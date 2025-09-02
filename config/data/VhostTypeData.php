@@ -157,7 +157,7 @@ return array (
       array (
         'name' => 'multisiteSubdomain',
         'description' => 'Subdomain for multisite',
-        'dataType' => 'text',
+        'dataType' => 'boolean',
         'defaultValue' => NULL,
       ),
       2 => 
