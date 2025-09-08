@@ -15,7 +15,15 @@ The web application is built with **Symfony**, and uses UX Live Components magic
 
 -----
 
+## Prerequisites
+
+Before installing the application, ensure you have the following tools set up:
+
+* **PHP** (version 8.1 or higher). For detailed requirements, see the [Symfony technical requirements](https://symfony.com/doc/current/setup.html#technical-requirements).
+* **Git** to clone the repository. For more information, refer to the [official GitHub documentation](https://docs.github.com/en/get-started/git-basics/set-up-git)
+
 ## Installation
+
 
 1.  **Clone the repository**:
 
